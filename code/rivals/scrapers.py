@@ -49,8 +49,14 @@ def scrape_lakeshore(page) -> list[dict]:
           category, card.inner_text())` — add its rows to your list.
     - Return all the rows in one list. (The cards have photos; you don't need them.)
     """
-    # TODO: your code here
-    pass
+    page.goto(cafe_url("Lakeshore Lattes"))
+    rows = []
+    for heading in page.query_selector_all("h2.menu-section__title"):
+        category = heading.inner_text()
+        grid = heading.query_selector("~ div.menu-grid")
+        for card in grid.query_selector_all("article.menu-card"):
+            rows.extend(card_rows("Lakeshore Lattes", category, card.inner_text()))
+    return rows
 
 
 def scrape_hilltop(page) -> list[dict]:
